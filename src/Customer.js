@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Consumption from './Consumption';
-import { Divider } from '@material-ui/core';
 
 class Customer extends Component {
     constructor(props) {

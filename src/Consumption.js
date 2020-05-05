@@ -7,6 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis } from 'recharts'
 
 const useStyles = makeStyles({
     table: {
@@ -45,11 +46,11 @@ class Consumption extends Component {
     componentDidMount() {
         console.log("inside Consumption componentDidMount");
         this.setState( { consumptions: [
-            { key: 1588580730000, productionAmount: 75, productionDate: new Date(1588580730000) },
-            { key: 1588596856000, productionAmount: 50, productionDate: new Date(1588596856000) },
-            { key: 1588686856000, productionAmount: 100, productionDate: new Date(1588686856000) },
-            { key: 1588700199000, productionAmount: 80, productionDate: new Date(1588686856000) },
-            { key: 1588711539000, productionAmount: 95, productionDate: new Date(1588686856000) }
+            { key: 1588580730000, consumptionAmount: 75, consumptionDate: new Date(1588580730000) },
+            { key: 1588596856000, consumptionAmount: 50, consumptionDate: new Date(1588596856000) },
+            { key: 1588686856000, consumptionAmount: 100, consumptionDate: new Date(1588686856000) },
+            { key: 1588700199000, consumptionAmount: 80, consumptionDate: new Date(1588686856000) },
+            { key: 1588711539000, consumptionAmount: 95, consumptionDate: new Date(1588686856000) }
         ]});
     }
 
@@ -67,15 +68,16 @@ class Consumption extends Component {
         const listItems = consumptions.map((consumption) =>
         <StyledTableRow key={consumption.key}>
             <StyledTableCell component="th" scope="row">
-                {consumption.productionDate.toString()}
+                {consumption.consumptionDate.toString()}
             </StyledTableCell>
             <StyledTableCell align="right">
-                {consumption.productionAmount}
+                {consumption.consumptionAmount}
             </StyledTableCell>
         </StyledTableRow>
         );
 
         return (
+            <div>
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
@@ -89,6 +91,20 @@ class Consumption extends Component {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <ResponsiveContainer height={300} width="95%">
+                <AreaChart data={consumptions}  margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                    <defs>
+                        <linearGradient id="colorCons" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
+                        </linearGradient>
+                    </defs>
+                    <XAxis dataKey="key" />
+                    <YAxis />
+                    <Area type="monotone" dataKey="consumptionAmount" stroke="#8884d8" fillOpacity={1} fill="url(#colorCons)" />
+                </AreaChart>
+            </ResponsiveContainer>
+            </div>
         );
     }
   }
