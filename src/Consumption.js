@@ -77,7 +77,7 @@ class Consumption extends Component {
         );
 
         return (
-            <div>
+            <React.Fragment>
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
@@ -104,7 +104,7 @@ class Consumption extends Component {
                     <Area type="monotone" dataKey="consumptionAmount" stroke="#8884d8" fillOpacity={1} fill="url(#colorCons)" />
                 </AreaChart>
             </ResponsiveContainer>
-            </div>
+            </React.Fragment>
         );
     }
   }
