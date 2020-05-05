@@ -1,4 +1,28 @@
 import React, {Component} from 'react';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+
+const useStyles = makeStyles({
+    table: {
+      minWidth: 650,
+    },
+  });
+
+const StyledTableCell = withStyles((theme) => ({
+    head: {
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
+    },
+    body: {
+        fontSize: 14,
+    },
+}))(TableCell);
 
 class Consumption extends Component {
     constructor(props) {
@@ -20,6 +44,8 @@ class Consumption extends Component {
     }
 
     render () {
+        const classes = useStyles;
+
         const consumptions = this.state.consumptions;
         if(!consumptions)
         { 
@@ -29,17 +55,30 @@ class Consumption extends Component {
 
         console.log("length = " + consumptions.length);
         const listItems = consumptions.map((consumption) =>
-        <li key={consumption.key}>
-        <span>{consumption.productionDate.toString()}</span> |  {consumption.productionAmount}
-        </li>
+        <TableRow key={consumption.key}>
+            <StyledTableCell component="th" scope="row">
+                {consumption.productionDate.toString()}
+            </StyledTableCell>
+            <StyledTableCell align="right">
+                {consumption.productionAmount}
+            </StyledTableCell>
+        </TableRow>
         );
 
         return (
-            <div className="App">
-            <ul className="items">
-                {listItems}
-            </ul>
-            </div>
+            <TableContainer component={Paper}>
+                <Table className={classes.table} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <StyledTableCell>Date</StyledTableCell>
+                            <StyledTableCell align="right">Electricity consumed</StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {listItems}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         );
     }
   }
