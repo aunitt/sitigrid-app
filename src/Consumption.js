@@ -24,6 +24,14 @@ const StyledTableCell = withStyles((theme) => ({
     },
 }))(TableCell);
 
+const StyledTableRow = withStyles((theme) => ({
+    root: {
+      '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+      },
+    },
+  }))(TableRow);
+
 class Consumption extends Component {
     constructor(props) {
         super(props);
@@ -37,9 +45,11 @@ class Consumption extends Component {
     componentDidMount() {
         console.log("inside Consumption componentDidMount");
         this.setState( { consumptions: [
-            { key: 1588686856000, productionAmount: 100, productionDate: new Date(1588686856000) },
+            { key: 1588580730000, productionAmount: 75, productionDate: new Date(1588580730000) },
             { key: 1588596856000, productionAmount: 50, productionDate: new Date(1588596856000) },
-            { key: 1588580730000, productionAmount: 75, productionDate: new Date(1588580730000) }
+            { key: 1588686856000, productionAmount: 100, productionDate: new Date(1588686856000) },
+            { key: 1588700199000, productionAmount: 80, productionDate: new Date(1588686856000) },
+            { key: 1588711539000, productionAmount: 95, productionDate: new Date(1588686856000) }
         ]});
     }
 
@@ -55,14 +65,14 @@ class Consumption extends Component {
 
         console.log("length = " + consumptions.length);
         const listItems = consumptions.map((consumption) =>
-        <TableRow key={consumption.key}>
+        <StyledTableRow key={consumption.key}>
             <StyledTableCell component="th" scope="row">
                 {consumption.productionDate.toString()}
             </StyledTableCell>
             <StyledTableCell align="right">
                 {consumption.productionAmount}
             </StyledTableCell>
-        </TableRow>
+        </StyledTableRow>
         );
 
         return (
