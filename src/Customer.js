@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import Consumption from './Consumption';
+
 
 class Customer extends Component {
     constructor(props) {
@@ -22,12 +22,6 @@ class Customer extends Component {
             <Typography>
                 Hello {this.state.customerName}
             </Typography>
-            <Box pt={4}>
-            <Typography>
-                Consumption records:
-            </Typography>
-            <Consumption/>
-            </Box>
         </Box>
       );
     }
