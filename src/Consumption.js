@@ -7,6 +7,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis } from 'recharts';
 import { useStyles, StyledTableCell, StyledTableRow } from './tableStyles';
+import moment from 'moment'
 
 class Consumption extends Component {
     constructor(props) {
@@ -21,11 +22,11 @@ class Consumption extends Component {
     componentDidMount() {
         console.log("inside Consumption componentDidMount");
         this.setState( { consumptions: [
-            { key: 1588580730000, consumptionAmount: 75, consumptionDate: new Date(1588580730000) },
-            { key: 1588596856000, consumptionAmount: 50, consumptionDate: new Date(1588596856000) },
-            { key: 1588686856000, consumptionAmount: 100, consumptionDate: new Date(1588686856000) },
-            { key: 1588700199000, consumptionAmount: 80, consumptionDate: new Date(1588686856000) },
-            { key: 1588711539000, consumptionAmount: 95, consumptionDate: new Date(1588686856000) }
+            { key: 1588580730000, consumptionAmount: 75, consumptionDate: 1588580730000 },
+            { key: 1588596856000, consumptionAmount: 50, consumptionDate: 1588596856000 },
+            { key: 1588686856000, consumptionAmount: 100, consumptionDate: 1588686856000 },
+            { key: 1588700199000, consumptionAmount: 80, consumptionDate: 1588700199000 },
+            { key: 1588711539000, consumptionAmount: 95, consumptionDate: 1588711539000 }
         ]});
     }
 
@@ -43,7 +44,7 @@ class Consumption extends Component {
         const listItems = consumptions.map((consumption) =>
         <StyledTableRow key={consumption.key}>
             <StyledTableCell component="th" scope="row">
-                {consumption.consumptionDate.toString()}
+                {moment(consumption.consumptionDate).format('DD/MM/YY HH:mm')}
             </StyledTableCell>
             <StyledTableCell align="right">
                 {consumption.consumptionAmount}
@@ -53,6 +54,27 @@ class Consumption extends Component {
 
         return (
             <React.Fragment>
+            <ResponsiveContainer height={350} width="95%">
+                <AreaChart data={consumptions}  margin={{ top: 20, right: 30, left: 10, bottom: 60 }}>
+                    <defs>
+                        <linearGradient id="colorCons" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
+                        </linearGradient>
+                    </defs>
+                    <XAxis 
+                        dataKey="consumptionDate"
+                        name="Time"
+                        domain = {['auto', 'auto']}
+                        type="number"
+                        tickFormatter={(unixTime) => moment(unixTime).format('DD/MM/YY HH:mm')}
+                        angle={-45} 
+                        textAnchor="end"
+                    />
+                    <YAxis />
+                    <Area type="monotone" dataKey="consumptionAmount" stroke="#8884d8" fillOpacity={1} fill="url(#colorCons)" />
+                </AreaChart>
+            </ResponsiveContainer>
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
@@ -66,19 +88,6 @@ class Consumption extends Component {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <ResponsiveContainer height={300} width="95%">
-                <AreaChart data={consumptions}  margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
-                    <defs>
-                        <linearGradient id="colorCons" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
-                        </linearGradient>
-                    </defs>
-                    <XAxis dataKey="key" />
-                    <YAxis />
-                    <Area type="monotone" dataKey="consumptionAmount" stroke="#8884d8" fillOpacity={1} fill="url(#colorCons)" />
-                </AreaChart>
-            </ResponsiveContainer>
             </React.Fragment>
         );
     }
