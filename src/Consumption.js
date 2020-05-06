@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis } from 'recharts';
 import { useStyles, StyledTableCell, StyledTableRow } from './tableStyles';
 import moment from 'moment'
+import { Typography } from '@material-ui/core';
 
 class Consumption extends Component {
     constructor(props) {
@@ -54,6 +55,7 @@ class Consumption extends Component {
 
         return (
             <React.Fragment>
+            <Typography variant="caption">
             <ResponsiveContainer height={350} width="95%">
                 <AreaChart data={consumptions}  margin={{ top: 20, right: 30, left: 10, bottom: 60 }}>
                     <defs>
@@ -75,6 +77,7 @@ class Consumption extends Component {
                     <Area type="monotone" dataKey="consumptionAmount" stroke="#8884d8" fillOpacity={1} fill="url(#colorCons)" />
                 </AreaChart>
             </ResponsiveContainer>
+            </Typography>
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
