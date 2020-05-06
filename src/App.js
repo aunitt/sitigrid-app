@@ -43,9 +43,9 @@ class App extends Component {
                   open={Boolean(anchorEl)}
                   onClose={this.handleClose}
                 >
-                  <MenuItem onClick={this.handleClose}>Consumption</MenuItem>
-                  <MenuItem onClick={this.handleClose}>Generation</MenuItem>
-                  <MenuItem onClick={this.handleClose}>Blockchain</MenuItem>
+                  <MenuItem onClick={this.handleClose} component={Link} to='/consumption'>Consumption</MenuItem>
+                  <MenuItem onClick={this.handleClose} component={Link} to='/generation'>Generation</MenuItem>
+                  <MenuItem onClick={this.handleClose} component={Link} to='/blockchain'>Blockchain</MenuItem>
                 </Menu>
                 <Typography variant="h6" >
                   Sitigrid Demo
@@ -65,14 +65,14 @@ class App extends Component {
               <Route path="/generation">
                 <Box m={4}>
                   <Typography>
-                    Generation records:
+                    Generation records: (TBD)
                   </Typography>
                 </Box>]
               </Route>
               <Route path="/blockchain">
                 <Box m={4}>
                   <Typography>
-                    Blockchain:
+                    Blockchain: (TBD)
                   </Typography>
                 </Box>]
               </Route>
