@@ -10,7 +10,7 @@ import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'rec
 import { useStyles, StyledTableCell, StyledTableRow } from './tableStyles';
 import moment from 'moment'
 
-const generationTariff = 0.075
+const generationTariff = 0.07
 
 class Generation extends Component {
     constructor(props) {

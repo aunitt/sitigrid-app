@@ -10,7 +10,7 @@ import { useStyles, StyledTableCell, StyledTableRow } from './tableStyles';
 import moment from 'moment'
 import { Typography } from '@material-ui/core';
 
-const consumptionTariff = 0.095
+const consumptionTariff = 0.09
 
 class Consumption extends Component {
     constructor(props) {
