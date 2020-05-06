@@ -5,7 +5,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis } from 'recharts';
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
 import { useStyles, StyledTableCell, StyledTableRow } from './tableStyles';
 import moment from 'moment'
 import { Typography } from '@material-ui/core';
@@ -74,6 +74,7 @@ class Consumption extends Component {
                         textAnchor="end"
                     />
                     <YAxis />
+                    <Tooltip labelFormatter={(unixTime) => moment(unixTime).format('DD/MM/YY HH:mm')}/>
                     <Area type="monotone" dataKey="consumptionAmount" stroke="#8884d8" fillOpacity={1} fill="url(#colorCons)" />
                 </AreaChart>
             </ResponsiveContainer>

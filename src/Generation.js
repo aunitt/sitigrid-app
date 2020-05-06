@@ -6,7 +6,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Typography } from '@material-ui/core';
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis } from 'recharts';
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
 import { useStyles, StyledTableCell, StyledTableRow } from './tableStyles';
 import moment from 'moment'
 
@@ -75,6 +75,7 @@ class Generation extends Component {
                         textAnchor="end"
                     />
                     <YAxis />
+                    <Tooltip labelFormatter={(unixTime) => moment(unixTime).format('DD/MM/YY HH:mm')}/>
                     <Area type="monotone" dataKey="generationAmount" stroke="#85ed7e" fillOpacity={1} fill="url(#colorCons)" />
                 </AreaChart>
             </ResponsiveContainer>
