@@ -10,6 +10,8 @@ import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'rec
 import { useStyles, StyledTableCell, StyledTableRow } from './tableStyles';
 import moment from 'moment'
 
+const generationTariff = 0.075
+
 class Generation extends Component {
     constructor(props) {
         super(props);
@@ -22,14 +24,23 @@ class Generation extends Component {
     // TODO: make the fetching async for better performance
     componentDidMount() {
         console.log("inside Generation componentDidMount");
-        this.setState( { generations: [
-            { key: 1588580730000, generationAmount: 65, generationDate: 1588580730000 },
-            { key: 1588596856000, generationAmount: 75, generationDate: 1588596856000 },
-            { key: 1588686856000, generationAmount: 110, generationDate: 1588686856000 },
-            { key: 1588700199000, generationAmount: 70, generationDate: 1588700199000 },
-            { key: 1588710199000, generationAmount: 60, generationDate: 1588710199000 },
-            { key: 1588711539000, generationAmount: 45, generationDate: 1588711539000 }
-        ]});
+        const rawGenerations = [
+            { generationAmount: 65, generationDate: 1588580730000 },
+            { generationAmount: 75, generationDate: 1588596856000 },
+            { generationAmount: 110, generationDate: 1588686856000 },
+            { generationAmount: 70, generationDate: 1588700199000 },
+            { generationAmount: 60, generationDate: 1588710199000 },
+            { generationAmount: 45, generationDate: 1588711539000 }
+        ];
+        const generations = rawGenerations.map( 
+            (generation) => ({ 
+                            key: generation.generationDate,
+                            generationAmount: generation.generationAmount,
+                            generationDate: generation.generationDate,
+                            revenue: generation.generationAmount * generationTariff
+                })
+            );
+        this.setState( { generations : generations } );
     }
 
     render () {
@@ -50,6 +61,9 @@ class Generation extends Component {
             </StyledTableCell>
             <StyledTableCell align="right">
                 {generation.generationAmount}
+            </StyledTableCell>
+            <StyledTableCell align="right">
+                {generation.revenue.toFixed(2)}
             </StyledTableCell>
         </StyledTableRow>
         );
@@ -75,8 +89,11 @@ class Generation extends Component {
                         textAnchor="end"
                     />
                     <YAxis />
-                    <Tooltip labelFormatter={(unixTime) => moment(unixTime).format('DD/MM/YY HH:mm')}/>
-                    <Area type="monotone" dataKey="generationAmount" stroke="#85ed7e" fillOpacity={1} fill="url(#colorCons)" />
+                    <Tooltip 
+                        labelFormatter={(unixTime) => moment(unixTime).format('DD/MM/YY HH:mm')}
+                        formatter={(revenue) => "£" + revenue.toFixed(2)}
+                    />
+                    <Area type="monotone" dataKey="revenue" stroke="#85ed7e" fillOpacity={1} fill="url(#colorCons)" />
                 </AreaChart>
             </ResponsiveContainer>
             </Typography>
@@ -86,6 +103,7 @@ class Generation extends Component {
                         <TableRow>
                             <StyledTableCell>Date</StyledTableCell>
                             <StyledTableCell align="right">Electricity generated (kWh)</StyledTableCell>
+                            <StyledTableCell align="right">Revenue (£)</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

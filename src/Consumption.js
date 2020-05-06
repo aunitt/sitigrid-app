@@ -10,6 +10,8 @@ import { useStyles, StyledTableCell, StyledTableRow } from './tableStyles';
 import moment from 'moment'
 import { Typography } from '@material-ui/core';
 
+const consumptionTariff = 0.095
+
 class Consumption extends Component {
     constructor(props) {
         super(props);
@@ -22,13 +24,22 @@ class Consumption extends Component {
     // TODO: make the fetching async for better performance
     componentDidMount() {
         console.log("inside Consumption componentDidMount");
-        this.setState( { consumptions: [
-            { key: 1588580730000, consumptionAmount: 75, consumptionDate: 1588580730000 },
-            { key: 1588596856000, consumptionAmount: 50, consumptionDate: 1588596856000 },
-            { key: 1588686856000, consumptionAmount: 100, consumptionDate: 1588686856000 },
-            { key: 1588700199000, consumptionAmount: 80, consumptionDate: 1588700199000 },
-            { key: 1588711539000, consumptionAmount: 95, consumptionDate: 1588711539000 }
-        ]});
+        const rawConsumptions = [
+            { consumptionAmount: 75, consumptionDate: 1588580730000 },
+            { consumptionAmount: 50, consumptionDate: 1588596856000 },
+            { consumptionAmount: 100, consumptionDate: 1588686856000 },
+            { consumptionAmount: 80, consumptionDate: 1588700199000 },
+            { consumptionAmount: 95, consumptionDate: 1588711539000 }  
+        ];
+        const consumptions = rawConsumptions.map( 
+            (consumption) => ({ 
+                            key: consumption.consumptionDate,
+                            consumptionAmount: consumption.consumptionAmount,
+                            consumptionDate: consumption.consumptionDate,
+                            cost: consumption.consumptionAmount * consumptionTariff
+                })
+            );
+        this.setState( { consumptions: consumptions } );
     }
 
     render () {
@@ -49,6 +60,9 @@ class Consumption extends Component {
             </StyledTableCell>
             <StyledTableCell align="right">
                 {consumption.consumptionAmount}
+            </StyledTableCell>
+            <StyledTableCell align="right">
+                {consumption.cost.toFixed(2)}
             </StyledTableCell>
         </StyledTableRow>
         );
@@ -74,8 +88,11 @@ class Consumption extends Component {
                         textAnchor="end"
                     />
                     <YAxis />
-                    <Tooltip labelFormatter={(unixTime) => moment(unixTime).format('DD/MM/YY HH:mm')}/>
-                    <Area type="monotone" dataKey="consumptionAmount" stroke="#8884d8" fillOpacity={1} fill="url(#colorCons)" />
+                    <Tooltip 
+                        labelFormatter={(unixTime) => moment(unixTime).format('DD/MM/YY HH:mm')}
+                        formatter={(cost) => "£" + cost.toFixed(2)}
+                    />
+                    <Area type="monotone" dataKey="cost" stroke="#8884d8" fillOpacity={1} fill="url(#colorCons)" />
                 </AreaChart>
             </ResponsiveContainer>
             </Typography>
@@ -85,6 +102,7 @@ class Consumption extends Component {
                         <TableRow>
                             <StyledTableCell>Date</StyledTableCell>
                             <StyledTableCell align="right">Electricity consumed (kWh)</StyledTableCell>
+                            <StyledTableCell align="right">Cost (£)</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
