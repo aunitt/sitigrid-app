@@ -7,6 +7,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { Menu, MenuItem, Box } from '@material-ui/core';
 import { MemoryRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Consumption from './Consumption';
+import Generation from './Generation';
 import './App.css';
 
 import Customer from './Customer';
@@ -43,6 +44,7 @@ class App extends Component {
                   open={Boolean(anchorEl)}
                   onClose={this.handleClose}
                 >
+                  <MenuItem onClick={this.handleClose} component={Link} to='/'>Home</MenuItem>
                   <MenuItem onClick={this.handleClose} component={Link} to='/consumption'>Consumption</MenuItem>
                   <MenuItem onClick={this.handleClose} component={Link} to='/generation'>Generation</MenuItem>
                   <MenuItem onClick={this.handleClose} component={Link} to='/blockchain'>Blockchain</MenuItem>
@@ -65,8 +67,9 @@ class App extends Component {
               <Route path="/generation">
                 <Box m={4}>
                   <Typography>
-                    Generation records: (TBD)
+                    Generation records:
                   </Typography>
+                  <Generation/>
                 </Box>]
               </Route>
               <Route path="/blockchain">
@@ -81,6 +84,9 @@ class App extends Component {
                   <Typography>
                     Welcome to Sitigrid!
                   </Typography>
+                  <Typography>
+                    Energy Sharing for a carbon Neutral Network
+                  </Typography>                
                 </Box>]
               </Route>
             </Switch>
