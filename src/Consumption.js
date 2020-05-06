@@ -83,7 +83,7 @@ class Consumption extends Component {
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>Date</StyledTableCell>
-                            <StyledTableCell align="right">Electricity consumed</StyledTableCell>
+                            <StyledTableCell align="right">Electricity consumed (kWh)</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
