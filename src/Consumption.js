@@ -46,7 +46,7 @@ export default function Consumption(props){
         setConsumptions( myConsumptions );
     }, []);
 
-    if(!Array.isArray(consumptions) || consumptions.length == 0)
+    if(!Array.isArray(consumptions) || consumptions.length === 0)
     { 
         console.log("Null consumptions");
         return null;

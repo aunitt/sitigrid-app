@@ -1,30 +1,20 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 
 
-class Customer extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          customerName: ""
-        };
-    }
+export default function Customer(props) {
+    const[customerName, setCustomerName] = useState("");
 
-    componentDidMount() {
-        console.log('componentDidMount called');
-        this.setState({customerName: "Ashley"});
-    }
+    useEffect(() => {
+      setCustomerName("Ashley");
+    }, []);
 
-    render () {
-      return (
-        <Box m={4} component="div" display="block">
-            <Typography>
-                Hello {this.state.customerName}
-            </Typography>
-        </Box>
-      );
-    }
+    return (
+      <Box m={4} component="div" display="block">
+          <Typography>
+              Hello {customerName}
+          </Typography>
+      </Box>
+    );
   }
-
-  export default Customer;

@@ -37,7 +37,7 @@ export default function Generation(props) {
         setGenerations( myGenerations );
     }, []);
 
-    if(!Array.isArray(generations) || generations.length == 0)
+    if(!Array.isArray(generations) || generations.length === 0)
     { 
         console.log("Null generations");
         return null;
