@@ -87,7 +87,7 @@ class App extends Component {
                   <Typography>
                     Energy Sharing for a carbon Neutral Network
                   </Typography>                
-                </Box>]
+                </Box>
               </Route>
             </Switch>
           </Router>
