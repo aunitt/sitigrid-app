@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -12,88 +12,80 @@ import './App.css';
 
 import Customer from './Customer';
 
-class App extends Component {
-  state = {
-    anchorEl: null
+export default function App(props) {
+  const[anchorEl, setAnchorEl] = useState(null);
+
+  const handleMenu = event => {
+    setAnchorEl( event.currentTarget );
   };
 
-  handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
+  const handleClose = () => {
+    setAnchorEl( null );
   };
 
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
-
-  render () {
-    const { classes } = this.props;
-    const { anchorEl } = this.state;
-
-    return (
-        <React.Fragment>
-          <Router>
-            <AppBar position="static">
-              <Toolbar>
-                <IconButton edge="start"  color="inherit" aria-label="menu">
-                  <MenuIcon onClick={this.handleMenu}/>
-                </IconButton>
-                <Menu
-                  id="main-menu"
-                  anchorEl={anchorEl}
-                  keepMounted
-                  open={Boolean(anchorEl)}
-                  onClose={this.handleClose}
-                >
-                  <MenuItem onClick={this.handleClose} component={Link} to='/'>Home</MenuItem>
-                  <MenuItem onClick={this.handleClose} component={Link} to='/consumption'>Consumption</MenuItem>
-                  <MenuItem onClick={this.handleClose} component={Link} to='/generation'>Generation</MenuItem>
-                  <MenuItem onClick={this.handleClose} component={Link} to='/blockchain'>Blockchain</MenuItem>
-                </Menu>
-                <Typography variant="h6" >
-                  Sitigrid Demo
+  return (
+      <React.Fragment>
+        <Router>
+          <AppBar position="static">
+            <Toolbar>
+              <IconButton edge="start"  color="inherit" aria-label="menu">
+                <MenuIcon onClick={handleMenu}/>
+              </IconButton>
+              <Menu
+                id="main-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose} component={Link} to='/'>Home</MenuItem>
+                <MenuItem onClick={handleClose} component={Link} to='/consumption'>Consumption</MenuItem>
+                <MenuItem onClick={handleClose} component={Link} to='/generation'>Generation</MenuItem>
+                <MenuItem onClick={handleClose} component={Link} to='/blockchain'>Blockchain</MenuItem>
+              </Menu>
+              <Typography variant="h6" >
+                Sitigrid Demo
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Switch>
+            <Route path="/consumption">
+              <Customer/>
+              <Box m={4}>
+                <Typography>
+                  Consumption records:
                 </Typography>
-              </Toolbar>
-            </AppBar>
-            <Customer/>
-            <Switch>
-              <Route path="/consumption">
-                <Box m={4}>
-                  <Typography>
-                    Consumption records:
-                  </Typography>
-                  <Consumption/>
-                </Box>]
-              </Route>
-              <Route path="/generation">
-                <Box m={4}>
-                  <Typography>
-                    Generation records:
-                  </Typography>
-                  <Generation/>
-                </Box>]
-              </Route>
-              <Route path="/blockchain">
-                <Box m={4}>
-                  <Typography>
-                    Blockchain: (TBD)
-                  </Typography>
-                </Box>]
-              </Route>
-              <Route path="/">
-                <Box m={4}>
-                  <Typography>
-                    Welcome to Sitigrid!
-                  </Typography>
-                  <Typography>
-                    Energy Sharing for a carbon Neutral Network
-                  </Typography>                
-                </Box>
-              </Route>
-            </Switch>
-          </Router>
-        </React.Fragment>
-    );
-  }
+                <Consumption/>
+              </Box>]
+            </Route>
+            <Route path="/generation">
+              <Customer/>
+              <Box m={4}>
+                <Typography>
+                  Generation records:
+                </Typography>
+                <Generation/>
+              </Box>]
+            </Route>
+            <Route path="/blockchain">
+              <Box m={4}>
+                <Typography>
+                  Blockchain: (TBD)
+                </Typography>
+              </Box>]
+            </Route>
+            <Route path="/">
+              <Box m={4}>
+                <Typography>
+                  Welcome to Sitigrid!
+                </Typography>
+                <Typography>
+                  Energy Sharing for a carbon Neutral Network
+                </Typography>                
+              </Box>
+            </Route>
+          </Switch>
+        </Router>
+      </React.Fragment>
+  );
 }
-
-export default App;
