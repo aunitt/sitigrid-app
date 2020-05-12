@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -8,12 +8,26 @@ import { Menu, MenuItem, Box } from '@material-ui/core';
 import { MemoryRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Consumption from './Consumption';
 import Generation from './Generation';
+import { apiURL } from './api.js';
 import './App.css';
 
 import Customer from './Customer';
 
 export default function App(props) {
   const[anchorEl, setAnchorEl] = useState(null);
+  const[customerName, setCustomerName] = useState("");
+
+  useEffect(() => 
+  {
+    async function fetchData() {
+      const res = await fetch(apiURL+"/customers/");
+      res
+        .json()
+        .then(res => setCustomerName(res[0].Record.customerName))
+    };
+
+    fetchData();
+  });
 
   const handleMenu = event => {
     setAnchorEl( event.currentTarget );
@@ -50,7 +64,7 @@ export default function App(props) {
           </AppBar>
           <Switch>
             <Route path="/consumption">
-              <Customer/>
+              <Customer customerName={customerName}/>
               <Box m={4}>
                 <Typography>
                   Consumption records:
@@ -59,7 +73,7 @@ export default function App(props) {
               </Box>]
             </Route>
             <Route path="/generation">
-              <Customer/>
+              <Customer  customerName={customerName}/>
               <Box m={4}>
                 <Typography>
                   Generation records:
