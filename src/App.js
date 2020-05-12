@@ -6,6 +6,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Menu, MenuItem, Box } from '@material-ui/core';
 import { MemoryRouter as Router, Switch, Route, Link } from "react-router-dom";
+import FormControl from '@material-ui/core/FormControl';
+import NativeSelect from '@material-ui/core/NativeSelect';
 import Consumption from './Consumption';
 import Generation from './Generation';
 import { apiURL } from './api.js';
@@ -16,6 +18,7 @@ import Customer from './Customer';
 export default function App(props) {
   const[anchorEl, setAnchorEl] = useState(null);
   const[customerName, setCustomerName] = useState("");
+  const[listItems, setListItems] = useState([]);
 
   useEffect(() => 
   {
@@ -23,11 +26,17 @@ export default function App(props) {
       const res = await fetch(apiURL+"/customers/");
       res
         .json()
-        .then(res => setCustomerName(res[0].Record.customerName))
+        .then(res => {
+            setListItems(res.map((result) => 
+               <option key={result.Record.customerName} value={result.Record.customerName}>{result.Record.customerName}</option>
+              )
+            );
+          }
+        )
     };
 
     fetchData();
-  });
+  }, []);
 
   const handleMenu = event => {
     setAnchorEl( event.currentTarget );
@@ -35,6 +44,11 @@ export default function App(props) {
 
   const handleClose = () => {
     setAnchorEl( null );
+  };
+
+  const handleChange = (event) => {
+    console.log("Setting customer name = " + event.target.value );
+    setCustomerName( event.target.value );
   };
 
   return (
@@ -96,6 +110,20 @@ export default function App(props) {
                 <Typography>
                   Energy Sharing for a carbon Neutral Network
                 </Typography>                
+              </Box>
+              <Box m={4}>
+                <Typography>
+                Please select a customer : 
+                </Typography>
+                <FormControl>
+                  <NativeSelect
+                    value={customerName}
+                    onChange={handleChange}
+                  >
+                    <option disabled aria-label="None" value="" />
+                    {listItems}
+                  </NativeSelect>
+                </FormControl>
               </Box>
             </Route>
           </Switch>
