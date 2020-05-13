@@ -16,6 +16,8 @@ import './App.css';
 import Customer from './Customer';
 import CreateData from './CreateData';
 
+const timeInterval = 1000;
+
 export default function App(props) {
   const[anchorEl, setAnchorEl] = useState(null);
   const[customerName, setCustomerName] = useState("");
@@ -41,7 +43,7 @@ export default function App(props) {
     const interval = setInterval(() => {
       /* Need to add check for customerName here */
       CreateData(customerName);
-    }, 1000);
+    }, timeInterval);
     return () => clearInterval(interval);
   }, []);
 
