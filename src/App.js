@@ -16,7 +16,7 @@ import './App.css';
 import Customer from './Customer';
 import CreateData from './CreateData';
 
-const timeInterval = 1000;
+const timeInterval = 10000;
 
 export default function App(props) {
   const[anchorEl, setAnchorEl] = useState(null);
@@ -45,7 +45,7 @@ export default function App(props) {
       CreateData(customerName);
     }, timeInterval);
     return () => clearInterval(interval);
-  }, []);
+  }, [customerName]);
 
   const handleMenu = event => {
     setAnchorEl( event.currentTarget );
