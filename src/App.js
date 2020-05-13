@@ -117,7 +117,7 @@ export default function App(props) {
                   Welcome to Sitigrid!
                 </Typography>
                 <Typography>
-                  Energy Sharing for a carbon Neutral Network
+                  Energy sharing for a carbon neutral network
                 </Typography>                
               </Box>
               <Box m={4}>
