@@ -14,6 +14,7 @@ import { apiURL } from './api.js';
 import './App.css';
 
 import Customer from './Customer';
+import CreateData from './CreateData';
 
 export default function App(props) {
   const[anchorEl, setAnchorEl] = useState(null);
@@ -36,6 +37,12 @@ export default function App(props) {
     };
 
     fetchData();
+
+    const interval = setInterval(() => {
+      /* Need to add check for customerName here */
+      CreateData(customerName);
+    }, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleMenu = event => {
