@@ -93,7 +93,7 @@ export default function App(props) {
                   Consumption records:
                 </Typography>
                 <Consumption/>
-              </Box>]
+              </Box>
             </Route>
             <Route path="/generation">
               <Customer  customerName={customerName}/>
@@ -102,14 +102,14 @@ export default function App(props) {
                   Generation records:
                 </Typography>
                 <Generation/>
-              </Box>]
+              </Box>
             </Route>
             <Route path="/blockchain">
               <Box m={4}>
                 <Typography>
                   Blockchain: (TBD)
                 </Typography>
-              </Box>]
+              </Box>
             </Route>
             <Route path="/">
               <Box m={4}>

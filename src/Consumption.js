@@ -7,6 +7,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
 import { useStyles, StyledTableCell, StyledTableRow } from './tableStyles';
+import { apiURL } from './api.js';
 import moment from 'moment'
 import { Typography } from '@material-ui/core';
 
@@ -18,6 +19,28 @@ export default function Consumption(props){
 
     useEffect(() => {
         console.log("inside Consumption useEffect");
+
+        async function fetchData() {
+            const res = await fetch(apiURL+"/consumptions/");
+            res
+                .json()
+                .then(res => {
+                    setConsumptions(
+                        res.map(
+                            (consumption) => ({ 
+                                key: consumption.Key,
+                                consumptionAmount: consumption.Record.consumptionAmount,
+                                consumptionDate: parseInt(consumption.Record.consumptionDate),
+                                cost: consumption.Record.consumptionAmount * consumptionTariff
+                            }) 
+                        )
+                    );
+                }
+                )
+        }
+
+        fetchData();
+        /*
         const rawConsumptions = [
             { consumptionAmount: 75, consumptionDate: 1588580730000 },
             { consumptionAmount: 50, consumptionDate: 1588596856000 },
@@ -44,6 +67,7 @@ export default function Consumption(props){
                 })
             );
         setConsumptions( myConsumptions );
+        */
     }, []);
 
     if(!Array.isArray(consumptions) || consumptions.length === 0)
@@ -53,13 +77,18 @@ export default function Consumption(props){
     }
 
     console.log("Consumptions length = " + consumptions.length);
-    const listItems = consumptions.map((consumption) =>
+    console.log(consumptions);
+
+    // Make sure the data is sorted by date
+    const myConsumptions = consumptions.sort((a,b) => a.consumptionDate - b.consumptionDate);
+
+    const listItems = myConsumptions.map((consumption) =>
     <StyledTableRow key={consumption.key}>
         <StyledTableCell component="th" scope="row">
             {moment(consumption.consumptionDate).format('DD/MM/YY HH:mm')}
         </StyledTableCell>
         <StyledTableCell align="right">
-            {consumption.consumptionAmount}
+            {consumption.consumptionAmount.toFixed(2)}
         </StyledTableCell>
         <StyledTableCell align="right">
             {consumption.cost.toFixed(2)}
@@ -71,7 +100,7 @@ export default function Consumption(props){
         <React.Fragment>
         <Typography variant="caption">
         <ResponsiveContainer height={350} width="95%">
-            <AreaChart data={consumptions}  margin={{ top: 20, right: 30, left: 10, bottom: 60 }}>
+            <AreaChart data={myConsumptions}  margin={{ top: 20, right: 30, left: 10, bottom: 60 }}>
                 <defs>
                     <linearGradient id="colorCons" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
