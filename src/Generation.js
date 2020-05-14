@@ -9,6 +9,7 @@ import { Typography } from '@material-ui/core';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
 import { useStyles, StyledTableCell, StyledTableRow } from './tableStyles';
 import { apiURL } from './api.js';
+import useInterval from './useInterval.js';
 import moment from 'moment'
 
 const generationTariff = 0.07
@@ -17,29 +18,35 @@ export default function Generation(props) {
     const [generations, setGenerations] = useState([]);
     const classes = useStyles();
 
+    async function fetchData() {
+        const res = await fetch(apiURL+"/productions/");
+        res
+            .json()
+            .then(res => {
+                setGenerations(
+                    res.map(
+                        (generation) => ({ 
+                            key: generation.Key,
+                            generationAmount: generation.Record.productionAmount,
+                            generationDate: parseInt(generation.Record.productionDate),
+                            revenue: generation.Record.productionAmount * generationTariff
+                        }) 
+                    )
+                );
+            }
+            )
+    }
+
+    useInterval(() => {
+        console.log("inside Generation useInterval");
+        fetchData();
+    }, [10000] 
+    );
+
     useEffect(() => {
         console.log("inside Generation useEffect");
-        async function fetchData() {
-            const res = await fetch(apiURL+"/productions/");
-            res
-                .json()
-                .then(res => {
-                    setGenerations(
-                        res.map(
-                            (generation) => ({ 
-                                key: generation.Key,
-                                generationAmount: generation.Record.productionAmount,
-                                generationDate: parseInt(generation.Record.productionDate),
-                                revenue: generation.Record.productionAmount * generationTariff
-                            }) 
-                        )
-                    );
-                }
-                )
-        }
-
+       
         fetchData();
-
         /*
         const rawGenerations = [
             { generationAmount: 65, generationDate: 1588580730000 },
@@ -73,7 +80,9 @@ export default function Generation(props) {
 
     // Make sure the data is sorted by date
     const myGenerations = generations.sort((a,b) => a.generationDate - b.generationDate);
-    const listItems = myGenerations.map((generation) =>
+    const myGenerationsRev = myGenerations.slice().reverse();
+
+    const listItems = myGenerationsRev.map((generation) =>
     <StyledTableRow key={generation.key}>
         <StyledTableCell component="th" scope="row">
             {moment(generation.generationDate).format('DD/MM/YY HH:mm:ss')}

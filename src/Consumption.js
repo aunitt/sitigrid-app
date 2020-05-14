@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
 import { useStyles, StyledTableCell, StyledTableRow } from './tableStyles';
 import { apiURL } from './api.js';
+import useInterval from './useInterval.js';
 import moment from 'moment'
 import { Typography } from '@material-ui/core';
 
@@ -17,28 +18,32 @@ export default function Consumption(props){
     const [consumptions, setConsumptions] = useState([]);
     const classes = useStyles();
 
+    async function fetchData() {
+        const res = await fetch(apiURL+"/consumptions/");
+        res
+            .json()
+            .then(res => {
+                setConsumptions(
+                    res.map(
+                        (consumption) => ({ 
+                            key: consumption.Key,
+                            consumptionAmount: consumption.Record.consumptionAmount,
+                            consumptionDate: parseInt(consumption.Record.consumptionDate),
+                            cost: consumption.Record.consumptionAmount * consumptionTariff
+                        }) 
+                    )
+                );
+            }
+            )
+    }
+
     useEffect(() => {
         console.log("inside Consumption useEffect");
+        fetchData();
+    }, []);
 
-        async function fetchData() {
-            const res = await fetch(apiURL+"/consumptions/");
-            res
-                .json()
-                .then(res => {
-                    setConsumptions(
-                        res.map(
-                            (consumption) => ({ 
-                                key: consumption.Key,
-                                consumptionAmount: consumption.Record.consumptionAmount,
-                                consumptionDate: parseInt(consumption.Record.consumptionDate),
-                                cost: consumption.Record.consumptionAmount * consumptionTariff
-                            }) 
-                        )
-                    );
-                }
-                )
-        }
-
+    useInterval(() => {
+        console.log("inside Consumption useInterval");
         fetchData();
         /*
         const rawConsumptions = [
@@ -68,7 +73,7 @@ export default function Consumption(props){
             );
         setConsumptions( myConsumptions );
         */
-    }, []);
+    }, [10000]);
 
     if(!Array.isArray(consumptions) || consumptions.length === 0)
     { 
@@ -77,12 +82,12 @@ export default function Consumption(props){
     }
 
     console.log("Consumptions length = " + consumptions.length);
-    console.log(consumptions);
 
     // Make sure the data is sorted by date
     const myConsumptions = consumptions.sort((a,b) => a.consumptionDate - b.consumptionDate);
+    const myConsumptionsRev = myConsumptions.slice().reverse();
 
-    const listItems = myConsumptions.map((consumption) =>
+    const listItems = myConsumptionsRev.map((consumption) =>
     <StyledTableRow key={consumption.key}>
         <StyledTableCell component="th" scope="row">
             {moment(consumption.consumptionDate).format('DD/MM/YY HH:mm')}
