@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import { Typography } from '@material-ui/core';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
 import { useStyles, StyledTableCell, StyledTableRow } from './tableStyles';
+import { apiURL } from './api.js';
 import moment from 'moment'
 
 const generationTariff = 0.07
@@ -18,6 +19,28 @@ export default function Generation(props) {
 
     useEffect(() => {
         console.log("inside Generation useEffect");
+        async function fetchData() {
+            const res = await fetch(apiURL+"/productions/");
+            res
+                .json()
+                .then(res => {
+                    setGenerations(
+                        res.map(
+                            (generation) => ({ 
+                                key: generation.Key,
+                                generationAmount: generation.Record.productionAmount,
+                                generationDate: parseInt(generation.Record.productionDate),
+                                revenue: generation.Record.productionAmount * generationTariff
+                            }) 
+                        )
+                    );
+                }
+                )
+        }
+
+        fetchData();
+
+        /*
         const rawGenerations = [
             { generationAmount: 65, generationDate: 1588580730000 },
             { generationAmount: 75, generationDate: 1588596856000 },
@@ -26,6 +49,7 @@ export default function Generation(props) {
             { generationAmount: 60, generationDate: 1588710199000 },
             { generationAmount: 45, generationDate: 1588711539000 }
         ];
+        
         const myGenerations = rawGenerations.map( 
             (generation) => ({ 
                             key: generation.generationDate,
@@ -35,6 +59,7 @@ export default function Generation(props) {
                 })
             );
         setGenerations( myGenerations );
+        */
     }, []);
 
     if(!Array.isArray(generations) || generations.length === 0)
@@ -44,13 +69,17 @@ export default function Generation(props) {
     }
 
     console.log("length = " + generations.length);
-    const listItems = generations.map((generation) =>
+    console.log(generations);
+
+    // Make sure the data is sorted by date
+    const myGenerations = generations.sort((a,b) => a.generationDate - b.generationDate);
+    const listItems = myGenerations.map((generation) =>
     <StyledTableRow key={generation.key}>
         <StyledTableCell component="th" scope="row">
-            {moment(generation.generationDate).format('DD/MM/YY HH:mm')}
+            {moment(generation.generationDate).format('DD/MM/YY HH:mm:ss')}
         </StyledTableCell>
         <StyledTableCell align="right">
-            {generation.generationAmount}
+            {generation.generationAmount.toFixed(2)}
         </StyledTableCell>
         <StyledTableCell align="right">
             {generation.revenue.toFixed(2)}
@@ -62,7 +91,7 @@ export default function Generation(props) {
         <React.Fragment>
         <Typography variant="caption">
         <ResponsiveContainer height={350} width="95%">
-            <AreaChart data={generations}  margin={{ top: 20, right: 30, left: 10, bottom: 60 }}>
+            <AreaChart data={myGenerations}  margin={{ top: 20, right: 30, left: 10, bottom: 60 }}>
                 <defs>
                     <linearGradient id="colorCons" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#85ed7e" stopOpacity={0.8}/>
@@ -87,7 +116,7 @@ export default function Generation(props) {
             </AreaChart>
         </ResponsiveContainer>
         </Typography>
-        <TableContainer component={Paper}>
+        <TableContainer className={classes.container} component={Paper}>
             <Table stickyHeader className={classes.table} aria-label="simple table">
                 <TableHead>
                     <TableRow>
