@@ -19,7 +19,7 @@ export default function Consumption(props){
     const classes = useStyles();
 
     async function fetchData() {
-        const res = await fetch(apiURL+"/consumptions/");
+        const res = await fetch(apiURL+"/customers/" + props.customerName + "/consumptions/");
         res
             .json()
             .then(res => {

@@ -19,7 +19,7 @@ export default function Generation(props) {
     const classes = useStyles();
 
     async function fetchData() {
-        const res = await fetch(apiURL+"/productions/");
+        const res = await fetch(apiURL+"/customers/"+props.customerName+"/productions/");
         res
             .json()
             .then(res => {
@@ -76,7 +76,6 @@ export default function Generation(props) {
     }
 
     console.log("length = " + generations.length);
-    console.log(generations);
 
     // Make sure the data is sorted by date
     const myGenerations = generations.sort((a,b) => a.generationDate - b.generationDate);

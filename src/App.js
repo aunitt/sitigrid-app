@@ -92,16 +92,16 @@ export default function App(props) {
                 <Typography>
                   Consumption records:
                 </Typography>
-                <Consumption/>
+                <Consumption customerName={customerName}/>
               </Box>
             </Route>
             <Route path="/generation">
-              <Customer  customerName={customerName}/>
+              <Customer customerName={customerName}/>
               <Box m={4}>
                 <Typography>
                   Generation records:
                 </Typography>
-                <Generation/>
+                <Generation customerName={customerName}/>
               </Box>
             </Route>
             <Route path="/blockchain">
