@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/sitigrid-app/precache-manifest.a0e0de17b8ab79ba6c0a49b39f56464f.js"
+  "/sitigrid-app/precache-manifest.2c8d67dcd8ded7cc20a3399cb92ecced.js"
 );
 
 self.addEventListener('message', (event) => {
