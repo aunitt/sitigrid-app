@@ -10,6 +10,7 @@ import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Consumption from './Consumption';
 import Generation from './Generation';
+import Blockchain from './Blockchain';
 import { apiURL } from './api.js';
 import './App.css';
 
@@ -107,8 +108,9 @@ export default function App(props) {
             <Route path="/blockchain">
               <Box m={4}>
                 <Typography>
-                  Blockchain: (TBD)
+                  Blockchain:
                 </Typography>
+                <Blockchain/>
               </Box>
             </Route>
             <Route path="/">
