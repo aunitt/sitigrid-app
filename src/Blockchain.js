@@ -48,10 +48,9 @@ export default function Blockchain(props){
             .json()
             .then( resCon => {
                         let myConsumptions = new Map();
-                        resCon.map( (res) => { 
+                        resCon.forEach( (res) => { 
                                 myConsumptions.set( res.Key, res.Record );
-                                }
-                        
+                                } 
                         ); 
                         setConsumptions( myConsumptions );
                     }
@@ -62,7 +61,7 @@ export default function Blockchain(props){
             .json()
             .then( resProd => {
                         let myGenerations = new Map();
-                        resProd.map( (res) => { 
+                        resProd.forEach( (res) => { 
                                 myGenerations.set( res.Key, res.Record );
                                 }                      
                         ); 
