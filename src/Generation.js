@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -18,7 +18,7 @@ export default function Generation(props) {
     const [generations, setGenerations] = useState([]);
     const classes = useStyles();
 
-    async function fetchData() {
+    const fetchDataCallback = useCallback( async function fetchData() {
         const res = await fetch(apiURL+"/customers/"+props.customerName+"/productions/");
         res
             .json()
@@ -36,17 +36,18 @@ export default function Generation(props) {
             }
             )
     }
+    , [props.customerName]);
 
     useInterval(() => {
         console.log("inside Generation useInterval");
-        fetchData();
+        fetchDataCallback();
     }, [10000] 
     );
 
     useEffect(() => {
         console.log("inside Generation useEffect");
        
-        fetchData();
+        fetchDataCallback();
         /*
         const rawGenerations = [
             { generationAmount: 65, generationDate: 1588580730000 },
@@ -67,7 +68,7 @@ export default function Generation(props) {
             );
         setGenerations( myGenerations );
         */
-    }, []);
+    }, [fetchDataCallback]);
 
     if(!Array.isArray(generations) || generations.length === 0)
     { 

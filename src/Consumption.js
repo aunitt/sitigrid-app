@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -18,7 +18,7 @@ export default function Consumption(props){
     const [consumptions, setConsumptions] = useState([]);
     const classes = useStyles();
 
-    async function fetchData() {
+    const fetchDataCallback = useCallback( async function fetchData() {
         const res = await fetch(apiURL+"/customers/" + props.customerName + "/consumptions/");
         res
             .json()
@@ -36,15 +36,16 @@ export default function Consumption(props){
             }
             )
     }
+    , [props.customerName]);
 
     useEffect(() => {
         console.log("inside Consumption useEffect");
-        fetchData();
-    }, []);
+        fetchDataCallback();
+    }, [fetchDataCallback]);
 
     useInterval(() => {
         console.log("inside Consumption useInterval");
-        fetchData();
+        fetchDataCallback();
         /*
         const rawConsumptions = [
             { consumptionAmount: 75, consumptionDate: 1588580730000 },
