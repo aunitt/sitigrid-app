@@ -19,7 +19,7 @@ export default function Generation(props) {
     const classes = useStyles();
 
     const fetchDataCallback = useCallback( async function fetchData() {
-        const res = await fetch(apiURL+"/customers/"+props.customerName+"/productions/");
+        const res = await fetch(apiURL+"/meters/"+props.meterpoint+"/productions/");
         res
             .json()
             .then(res => {
@@ -36,7 +36,7 @@ export default function Generation(props) {
             }
             )
     }
-    , [props.customerName]);
+    , [props.meterpoint]);
 
     useInterval(() => {
         console.log("inside Generation useInterval");

@@ -20,15 +20,15 @@ function getRandomFloat(min, max) {
     return randn_bm() * (max - min) + min;
   }
 
-export default function CreateData(customerName) {
-    console.log('Creating data for '+customerName);
+export default function CreateData(meterpoint) {
+    console.log('Creating data for '+meterpoint);
 
     const productionAmount = getRandomFloat(minGeneration,maxGeneration);
 
     const generationOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customerName: customerName,
+        body: JSON.stringify({ MPAN: meterpoint,
                                productionAmount: productionAmount
                              }
                             )
@@ -41,7 +41,7 @@ export default function CreateData(customerName) {
     const consumptionOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customerName: customerName,
+        body: JSON.stringify({ MPAN: meterpoint,
                                consumptionAmount: consumptionAmount
                              }
                             )

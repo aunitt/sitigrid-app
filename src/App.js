@@ -14,25 +14,25 @@ import Blockchain from './Blockchain';
 import { apiURL } from './api.js';
 import './App.css';
 
-import Customer from './Customer';
+import Meter from './Meter';
 import CreateData from './CreateData';
 
 const timeInterval = 10000;
 
 export default function App(props) {
   const[anchorEl, setAnchorEl] = useState(null);
-  const[customerName, setCustomerName] = useState("");
+  const[meterpoint, setMeterpoint] = useState("");
   const[listItems, setListItems] = useState([]);
 
   useEffect(() => 
   {
     async function fetchData() {
-      const res = await fetch(apiURL+"/customers/");
+      const res = await fetch(apiURL+"/meters/");
       res
         .json()
         .then(res => {
             setListItems(res.map((result) => 
-               <option key={result.Record.customerName} value={result.Record.customerName}>{result.Record.customerName}</option>
+               <option key={result.Record.meterpoint} value={result.Record.meterpoint}>{result.Record.meterpoint}</option>
               )
             );
           }
@@ -42,11 +42,11 @@ export default function App(props) {
     fetchData();
 
     const interval = setInterval(() => {
-      /* Need to add check for customerName here */
-      CreateData(customerName);
+      /* Need to add check for meterpoint here */
+      CreateData(meterpoint);
     }, timeInterval);
     return () => clearInterval(interval);
-  }, [customerName]);
+  }, [meterpoint]);
 
   const handleMenu = event => {
     setAnchorEl( event.currentTarget );
@@ -57,8 +57,8 @@ export default function App(props) {
   };
 
   const handleChange = (event) => {
-    console.log("Setting customer name = " + event.target.value );
-    setCustomerName( event.target.value );
+    console.log("Setting meter = " + event.target.value );
+    setMeterpoint( event.target.value );
   };
 
   return (
@@ -88,21 +88,21 @@ export default function App(props) {
           </AppBar>
           <Switch>
             <Route path="/consumption">
-              <Customer customerName={customerName}/>
+              <Meter meterpoint={meterpoint}/>
               <Box m={4}>
                 <Typography>
                   Consumption records:
                 </Typography>
-                <Consumption customerName={customerName}/>
+                <Consumption meterpoint={meterpoint}/>
               </Box>
             </Route>
             <Route path="/generation">
-              <Customer customerName={customerName}/>
+              <Meter meterpoint={meterpoint}/>
               <Box m={4}>
                 <Typography>
                   Generation records:
                 </Typography>
-                <Generation customerName={customerName}/>
+                <Generation meterpoint={meterpoint}/>
               </Box>
             </Route>
             <Route path="/blockchain">
@@ -124,11 +124,11 @@ export default function App(props) {
               </Box>
               <Box m={4}>
                 <Typography>
-                Please select a customer : 
+                Please select a meter : 
                 </Typography>
                 <FormControl>
                   <NativeSelect
-                    value={customerName}
+                    value={meterpoint}
                     onChange={handleChange}
                   >
                     <option disabled aria-label="None" value="" />

@@ -19,7 +19,7 @@ export default function Consumption(props){
     const classes = useStyles();
 
     const fetchDataCallback = useCallback( async function fetchData() {
-        const res = await fetch(apiURL+"/customers/" + props.customerName + "/consumptions/");
+        const res = await fetch(apiURL+"/meters/" + props.meterpoint + "/consumptions/");
         res
             .json()
             .then(res => {
@@ -36,7 +36,7 @@ export default function Consumption(props){
             }
             )
     }
-    , [props.customerName]);
+    , [props.meterpoint]);
 
     useEffect(() => {
         console.log("inside Consumption useEffect");
