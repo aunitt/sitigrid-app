@@ -32,7 +32,7 @@ export default function App(props) {
         .json()
         .then(res => {
             setListItems(res.map((result) => 
-               <option key={result.Record.meterpoint} value={result.Record.meterpoint}>{result.Record.meterpoint}</option>
+               <option key={result.Record.MPAN} value={result.Record.MPAN}>{result.Record.MPAN}</option>
               )
             );
           }
