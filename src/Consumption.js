@@ -28,7 +28,7 @@ export default function Consumption(props){
                         (consumption) => ({ 
                             key: consumption.Key,
                             consumptionAmount: consumption.Record.consumptionAmount,
-                            consumptionDate: parseInt(consumption.Record.consumptionDate),
+                            consumptionDate: Date.parse(consumption.Record.consumptionDate),
                             cost: consumption.Record.consumptionAmount * consumptionTariff
                         }) 
                     )
@@ -83,6 +83,7 @@ export default function Consumption(props){
     }
 
     console.log("Consumptions length = " + consumptions.length);
+    console.log(consumptions[0].consumptionDate);
 
     // Make sure the data is sorted by date
     const myConsumptions = consumptions.sort((a,b) => a.consumptionDate - b.consumptionDate);

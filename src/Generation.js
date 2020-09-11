@@ -28,7 +28,7 @@ export default function Generation(props) {
                         (generation) => ({ 
                             key: generation.Key,
                             generationAmount: generation.Record.productionAmount,
-                            generationDate: parseInt(generation.Record.productionDate),
+                            generationDate: Date.parse(generation.Record.productionDate),
                             revenue: generation.Record.productionAmount * generationTariff
                         }) 
                     )

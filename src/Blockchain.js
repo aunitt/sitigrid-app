@@ -29,20 +29,20 @@ export default function Blockchain(props){
         var dateA, dateB;
         
         if ( 'consumptionDate' in a[1])
-            dateA = parseInt(a[1].consumptionDate);
+            dateA = Date.parse(a[1].consumptionDate);
         else
-            dateA = parseInt(a[1].productionDate);
+            dateA = Date.parse(a[1].productionDate);
 
         if ( 'consumptionDate' in b[1])
-            dateB = parseInt(b[1].consumptionDate);
+            dateB = Date.parse(b[1].consumptionDate);
         else
-            dateB = parseInt(b[1].productionDate); 
+            dateB = Date.parse(b[1].productionDate); 
 
         return dateB - dateA;
     }
 
     async function fetchData() {
-        const resCon = await fetch(apiURL+"/consumptions/");
+        const resCon = await fetch(apiURL+"/meters/" + props.meterpoint + "/consumptions/");
 
         resCon
             .json()
@@ -56,7 +56,7 @@ export default function Blockchain(props){
                     }
                  );
         
-        const resProd = await fetch(apiURL+"/productions/");
+        const resProd = await fetch(apiURL+"/meters/" + props.meterpoint + "/productions/");
         resProd
             .json()
             .then( resProd => {

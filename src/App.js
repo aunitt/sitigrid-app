@@ -110,7 +110,7 @@ export default function App(props) {
                 <Typography>
                   Blockchain:
                 </Typography>
-                <Blockchain/>
+                <Blockchain meterpoint={meterpoint}/>
               </Box>
             </Route>
             <Route path="/">
