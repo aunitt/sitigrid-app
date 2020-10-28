@@ -28,7 +28,7 @@ export default function Consumption(props){
                         (consumption) => ({ 
                             key: consumption.Key,
                             consumptionAmount: consumption.Record.consumptionAmount,
-                            consumptionDate: Date.parse(consumption.Record.consumptionDate),
+                            consumptionDate: consumption.Record.consumptionDate,
                             cost: consumption.Record.consumptionAmount * consumptionTariff
                         }) 
                     )
